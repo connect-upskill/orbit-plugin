@@ -1,0 +1,14 @@
+{
+  "name": "orbit",
+  "owner": {
+    "name": "Orbit",
+    "url": "https://github.com/connect-upskill"
+  },
+  "description": "Orbit — people search from your agent. Install the Orbit plugin to search and build market maps inside Claude Code.",
+  "plugins": [
+    {
+      "name": "orbit",
+      "source": "./"
+    }
+  ]
+}

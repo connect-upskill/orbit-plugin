@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "orbit": {
+      "type": "http",
+      "url": "${user_config.orbit_url}/mcp",
+      "note": "Orbit's remote MCP server. Uses OAuth — on first use the agent is prompted to authenticate in the browser; no API key. The URL host comes from the plugin's `orbit_url` option (defaults to the hosted service)."
+    }
+  }
+}
