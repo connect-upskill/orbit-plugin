@@ -36,18 +36,25 @@ and choose **Authenticate** (a browser opens once), then retry.
 2. **Handle a still-running search.** If `done` is `false`, the search is an
    async (open-web) one that ran past the tool's poll window. Tell the user
    the current count and the `projectId`, then either:
-   - wait and call `orbit_results` with `{ projectId }` to fetch results once
-     ready, or
+   - wait and fetch the results with `orbit_results` once ready (step 3), or
    - stop here and let them re-run later with `/orbit-export <projectId> md <dir>`.
-     Only continue to step 3 once you have a non-empty `results` array.
+     Only continue once the search is done.
 
-3. **Stage the results.** `Write` the tool's structured result to a temporary
+3. **Fetch every result.** `orbit_search` returns at most the first 100
+   people. If `total` is larger than the `results` you hold, call
+   the `orbit_results` MCP tool with `{ projectId: "<projectId>", limit: 200, offset: 0 }`, then again with
+   `offset` raised by 200 until you hold `total` results — one call returns at
+   most 200, so a single call silently drops everyone past the first page.
+   Combine the pages into one `{ projectId, total, results }` object.
+
+4. **Stage the results.** `Write` every result you hold (the combined pages,
+   if you paged) to a temporary
    file **outside** the output dir (e.g. `${TMPDIR:-/tmp}/orbit-results.json`),
    so the scratch file never lands in the Obsidian vault. Write the whole
    object (it has `{ results, ... }`) — `buildVault.mjs` accepts either the
    object or a bare results array.
 
-4. **Build the vault.** Run, via Bash:
+5. **Build the vault.** Run, via Bash:
 
    ```bash
    node "${CLAUDE_PLUGIN_ROOT}/scripts/buildVault.mjs" \
@@ -60,9 +67,9 @@ and choose **Authenticate** (a browser opens once), then retry.
    Obsidian when it's installed (pass `--no-open` to skip). It prints a summary
    and, on markdown, an Obsidian status line — relay both.
 
-5. **Clean up.** Delete the temporary results file from step 3.
+6. **Clean up.** Delete the temporary results file from step 4.
 
-6. **Report.** Tell the user how many notes were written, the folder path, and
+7. **Report.** Tell the user how many notes were written, the folder path, and
    the Obsidian outcome (opened, or the install hint + deep link the script
    printed). Suggest opening the **graph view** to see the market.
 

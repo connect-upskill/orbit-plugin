@@ -43,13 +43,7 @@ The plugin's **Orbit URL** option defaults to the hosted service; leave it.
   iterating. Not something you invoke directly; it sharpens how the agent drives
   the tools.
 
-**MCP tools** (available to the agent directly): `orbit_search`,
-`orbit_status`, `orbit_results`.
-
-> Naming note: commands are typed bare (`/orbit-search`, `/orbit-export`);
-> the skill is plugin-namespaced (`/orbit:market-map`). That colon-vs-hyphen
-> split is Claude Code's convention — commands keep their filename, skills are
-> namespaced by plugin — not an inconsistency in Orbit.
+**MCP tools** (available to the agent directly): `orbit_search`, `orbit_status`, `orbit_results`, plus `orbit_feedback` so the agent can send Orbit a bug report or feature request for you.
 
 ## 2-minute demo: build a market map
 
@@ -62,23 +56,21 @@ Claude: [calls orbit_search → writes one note per person + _index.md into
 You:    [Obsidian → graph view] — the whole market, clustered by company.
 ```
 
-That's the pitch: Orbit is a platform your agent builds on, not just a web app.
-
 ## How it works
 
-- The bundled `orbit` MCP server is **remote** (`type: "http"`, pointed at
-  `https://api.orbitpeople.ai/mcp`). Remote transport is what lets Claude Code run the OAuth
-  browser flow — there's no local process and no key in your config.
+- The plugin connects to Orbit's hosted server (`https://api.orbitpeople.ai/mcp`) over the web, so Claude Code handles sign-in in your browser — nothing runs locally and no key sits in your config.
 - File-writing is done **locally by the plugin**, not the server: the
   market-map skill takes the results the agent fetched over MCP and runs the
   bundled, dependency-free [`scripts/buildVault.mjs`](scripts/buildVault.mjs)
   to format the per-person markdown + `_index.md`. (Byte-compatible with the
   standalone stdio server,
   [`@orbitpeople/mcp`](https://www.npmjs.com/package/@orbitpeople/mcp).)
-- **Provider-anonymous.** Nothing in the output names a data provider; the
-  `surfacedBy` field is the search-strategy label.
+- Results never name the data source they came from; `surfacedBy` says how
+  Orbit found the person.
 
-Node ≥ 20 is required for the local vault script.
+Node ≥ 20 is required for the local vault script. Opening the graph needs
+[Obsidian](https://obsidian.md) installed; without it you still get the folder
+of notes.
 
 ## License
 

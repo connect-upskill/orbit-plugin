@@ -3,7 +3,7 @@
   "name": "orbit",
   "displayName": "Orbit",
   "description": "People search from your agent — search, then build a market map as markdown for Obsidian.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": {
     "name": "Orbit",
     "url": "https://github.com/connect-upskill"

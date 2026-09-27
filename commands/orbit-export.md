@@ -14,16 +14,19 @@ Parse `$ARGUMENTS` as: `<projectId> [format] [output-dir]`.
 
 Steps:
 
-1. Call the `orbit_results` MCP tool (this plugin's bundled `orbit` server)
-   with `{ projectId: "<projectId>" }` to fetch the results. If it reports the
+1. Fetch every result: call the `orbit_results` MCP tool with
+   `{ projectId: "<projectId>", limit: 200, offset: 0 }`, then again with
+   `offset` raised by 200 until you hold `total` results — one call returns at
+   most 200, so a single call silently drops everyone past the first page.
+   Combine the pages into one `{ projectId, total, results }` object.
+   (The tool is on this plugin's bundled `orbit` server.) If it reports the
    server needs authentication, tell the user to run `/mcp` → **orbit** →
    **Authenticate**, then retry. If there's no such project, say so plainly
    (don't guess another id).
-2. `Write` the tool's structured result to a temporary file **outside** the
-   output dir, e.g. `${TMPDIR:-/tmp}/orbit-results.json`. Write the whole
-   object — `buildVault.mjs` reads `{ results, ... }` and carries the rest as
-   JSON-export `meta` (projectId, total, limit, offset), so JSON exports have
-   a stable envelope.
+2. `Write` the combined object to a temporary file **outside** the output
+   dir, e.g. `${TMPDIR:-/tmp}/orbit-results.json` — `buildVault.mjs` reads
+   `{ results, ... }` and carries the rest as JSON-export `meta`, so JSON
+   exports have a stable envelope.
 3. Run, via Bash:
 
    ```bash
