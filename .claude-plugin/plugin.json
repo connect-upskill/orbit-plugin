@@ -3,22 +3,13 @@
   "name": "orbit",
   "displayName": "Orbit",
   "description": "People search from your agent — search, then build a market map as markdown for Obsidian.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": {
     "name": "Orbit",
     "url": "https://github.com/connect-upskill"
   },
   "homepage": "https://github.com/connect-upskill/orbit-plugin",
   "keywords": ["people-search", "recruiting", "market-map", "orbit", "mcp"],
-  "userConfig": {
-    "orbit_url": {
-      "type": "string",
-      "title": "Orbit URL",
-      "description": "The Orbit API origin that serves /mcp and the OAuth discovery docs. Leave the default for the hosted Orbit service; change it only to point at another Orbit deployment.",
-      "required": false,
-      "default": "https://api.orbitpeople.ai"
-    }
-  },
   "repository": "https://github.com/connect-upskill/orbit-plugin",
   "license": "MIT"
 }

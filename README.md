@@ -22,7 +22,7 @@ On first use the `orbit` MCP server asks you to **authenticate in the browser**
 authentication, run `/mcp`, select **orbit**, and choose **Authenticate**.
 
 You need an Orbit account — sign up at [orbitpeople.ai](https://orbitpeople.ai).
-The plugin's **Orbit URL** option defaults to the hosted service; leave it.
+There is nothing to configure.
 
 ## What you get
 
